@@ -1,0 +1,325 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<!-- datatables.html  21 Nov 2019 03:55:21 GMT -->
+<!-- Header Section -->
+{% include "includes/head.html" %}
+<!-- End Header Section -->
+<style>
+    .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        /* padding-left: 10px; */
+        padding-right: 10px;
+    }
+
+    .bg-white {
+        color: black !important;
+    }
+</style>
+
+<body>
+    <div class="loader"></div>
+
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="navbar-bg"></div>
+
+            <!-- Nav Bar Section  -->
+            <div class="issueNav">
+                {% include "includes/nav.html" %}
+            </div>
+            <!-- End Nav Bar Section -->
+
+            <!-- Side Bar Section -->
+            <div class="issuesidebar">
+                {% include "includes/sidebar.html" %}
+            </div>
+            <!-- End Side Bar Section -->
+            <!-- Main Content -->
+            <div class="main-content">
+
+
+                <div class="w-100 bg-white rounded mt-3">
+                    {% if perms.app.print_info %}
+                    <button class="btn btn-primary btn-blue issueprint" onclick="printReport()">
+                        <i class="fas fa-print"></i>
+                    </button>
+                    {% endif %}
+
+                    <div class="w-100 d-flex align-items-center justify-content-center pt-3">
+                        <img alt="image" src="{% static 'assets/img/snwo.png' %}" class="rounded-circle" width="100"
+                            height="auto" />
+                    </div>
+                    <div class="row w-100 mt-3 case-holder">
+                        <h4 class="text-black pl-4">XOGTA DIRAHA</h4>
+                        <div class="w-100 row pb-2">
+                            <div class="col text-black row" style="font-size: 15px;">
+                                <div class="col-4"> <b>Magaca:</b></div>
+                                <div class="col">{{cases.person.user.first_name}} {{cases.person.user.last_name}}</div>
+                            </div>
+                            <div class="col text-black row" style="font-size: 15px;">
+                                <div class="col-4"><b>Summada:</b></div>
+                                <div class="col">{{cases.person.user_code}}</div>
+                            </div>
+                            <div class="col text-black row" style="font-size: 15px;">
+                                <div class="col-4"><b>Email:</b></div>
+
+                                <div class="col">{{cases.person.user.email}}</div>
+                            </div>
+                            <div class="col text-black row" style="font-size: 15px;">
+                                <div class="col-4"><b>Username:</b></div>
+
+                                <div class="col">{{cases.person.user.username}}</div>
+                            </div>
+                        </div>
+                        <!-- eveidence -->
+                        <h4 class="text-black pl-4 mt-3">WARBIXINTA</h4>
+                        <div class="w-100 row pb-2">
+                            <div class="col text-black row" style="font-size: 15px;">
+                                <div class="col-4"><b>Degmada:</b> </div>
+                                <div class="col">Degmada {{cases.district}}</div>
+
+                            </div>
+                            <div class="col text-black row" style="font-size: 15px;">
+                                <div class="col-4"><b>Waaxda :</b></div>
+                                <div class="col">Waaxda {{cases.unit}}</div>
+                            </div>
+                            <div class="col text-black row" style="font-size: 15px;">
+                                <div class="col-4"><b>Laanta:</b></div>
+                                <div class="col">{{cases.sub_unit}}</div>
+                            </div>
+                        </div>
+                        {% if cases.form == 0 %}
+                        <div class="w-100 row pb-2">
+                            <div class="col text-black row" style="font-size: 15px;">
+                                <div class="col-4"><b>Xogta: </b></div>
+                                <div class="col">Normal Case</div>
+                            </div>
+                            <div class="col text-black row">
+                                <div class="col-4"><b>Case:</b></div>
+                                <div class="col">{{cases.case}}
+                                </div>
+                            </div>
+                            <div class="col text-black row">
+                                <div class="col-4 text-black"><b>Nooca {{cases.case}}-ka</b></div>
+                                <div class="col">{{cases.type}}</div>
+                            </div>
+                            <div class="col text-black row">
+                                <div class="col-4 text-black"><b>Date</b></div>
+                                <div class="col">{{cases.created_at | date:'d-F-Y' }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if cases.form == 1 %}
+                        <div class="w-100 row pb-2">
+                            <div class="col text-black row" style="font-size: 15px;">
+                                <div class="col-3"><b>Xogta: </b></div>
+                                <div class="col">Terorist Case</div>
+                            </div>
+                            <div class="col text-black row">
+                                <div class="col-3"><b>Xaalada:</b></div>
+                                <div class="col">{{cases.status}}
+                                </div>
+                            </div>
+                            <div class="col text-black row">
+                                <div class="col-2 text-black"><b>Date</b></div>
+                                <div class="col">{{cases.created_at | date:'d-F-Y' }}</div>
+                            </div>
+                            <div class="col text-black row">
+                                <div class="col-5 "><b>Dadweynaha</b></div>
+                                <div class="col">{{cases.info}}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+
+                    <div class="section-title mt-0"><b> Faah Faahinta:</b></div>
+                    <span>{{cases.description}} <em>Waxaana Qeybta Hoose Ee Warbixntaan ku lifaaqan Cadeynta
+                            Sawirada</em></span><br>
+                    <center>
+
+                        {% for file_obj in cases.files.all %}
+                        <a href="{{ file_obj.file.url }}">
+
+                            <img src="{{ file_obj.file.url }}" alt="{{ file_obj.file.name }}" width="200" height="auto">
+                        </a>
+
+                        {% endfor %}
+                    </center>
+
+                </div>
+
+                <div class="card-body infoData">
+                    <span style="font-size: medium; text-align: justify; text-justify: auto;">
+                        Warbixintaan Waxaa soo diray Sarkaalka Magaciisa Sare ku xusan Haddaba Xafiisa Uruka Haweenka
+                        Soaamliyeed wuxuu arintaan ka qaadi doonaa tilaabo deg deg ah
+                    </span>
+                </div>
+                {% if user.is_authenticated %}
+                <div class="card-body titleInfo">
+                    <center>
+
+                        <span style="text-align: center; right: auto; text-transform: uppercase;">
+                            <b> Xafiiska Warbixinada <br>
+                                <br>
+                                <br>
+                                Mr/Mrs {{user.first_name}} {{user.last_name}}<br>
+                                <br>
+                                ___________________
+                            </b>
+                        </span>
+                    </center>
+
+                </div>
+                {% endif %}
+            </div>
+
+
+
+        </div>
+    </div>
+    <!-- End Modal -->
+
+
+    <div class="modal fade" id="updateFile" tabindex="-1" role="dialog" aria-labelledby="userRegister"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userRegister">
+                        Change File
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="updateForm" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+
+                            <div class="section-title">File Browser</div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" name="file" required>
+                                <label class="custom-file-label" for="file">Choose file</label>
+                            </div><br><br>
+
+
+                        </div>
+                        <input type="text" class="form-control" hidden id="upid" name="upid" required>
+
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="btn btn-secondary">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="savebutton">
+                                Save changes
+                            </button>
+                        </div>
+                </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Setting Bar Sections -->
+    <div class="issuesettingbar">
+        {% include "includes/settingbar.html" %}
+    </div>
+    <!-- Ending Setting Bar Sections -->
+    </div>
+
+    <!-- Footbar Section -->
+    <div class="issuefooter">
+        {% include "includes/footer.html" %}
+    </div>
+    <!-- EndFootbar Section -->
+    </div>
+    </div>
+    {% include "includes/scripts.html" %}
+    <!-- General JS Scripts -->
+    <script>
+
+        $(document).ready(function () {
+            changefile();
+            $('.infoData').hide();
+            $('.titleInfo').hide();
+
+        })
+
+        function changefile() {
+            $(".isssueChange").click(function () {
+                $id = $(this).data("id");
+                // alert($id);
+                $('#updateFile').modal('show');
+                $('#upid').val($id)
+
+
+                // $('#updateForm').submit(function (e){
+                //     e.preventDefault();
+                //     $new_file = $('#file').val();
+                //     alert($new_file)
+
+                //     $.ajax({
+                //         url:'/updateFile/',
+                //         type: 'POST',
+                //         data: {
+                //             'id':$id,
+                //             'file':$new_file,
+                //             csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                //         }
+                //     })
+                // })
+
+
+
+
+            });
+
+        }
+        function printReport() {
+            hideContent();
+            window.print();
+            showContent();
+            //   location.reload();
+        }
+        function hideContent() {
+            // $('.navbar-bg').hide();
+            $('.issueNav').hide();
+            $('.isssueChange').hide();
+            $('.issueprint').hide();
+            $('.issuesidebar').hide();
+            $('.issuesettingbar').hide();
+            $('.issuefooter').hide();
+            $('.infoData').show();
+            $('.titleInfo').show();
+        }
+        function showContent() {
+            $('.issueNav').show();
+            $('.isssueChange').show();
+            $('.issueprint').show();
+            $('.issuesidebar').show();
+            $('.issuesettingbar').show();
+            $('.issuefooter').show();
+            $('.infoData').hide();
+            $('.titleInfo').hide();
+        }
+    </script>
+
+    <!-- Scripts Section -->
+
+    <!-- End Scripts Section -->
+</body>
+
+<!-- datatables.html  21 Nov 2019 03:55:25 GMT -->
+
+</html>

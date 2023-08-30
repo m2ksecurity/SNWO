@@ -1,0 +1,323 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head Section -->
+{% include "includes/head.html" %}
+<!-- End Head Section -->
+
+<body>
+    <div class="loader"></div>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="navbar-bg"></div>
+
+            <!-- Nav Bar Section  -->
+            {% include "includes/nav.html" %}
+            <!-- End Nav Bar Section -->
+
+            <!-- Side Bar Section -->
+            {% include "includes/sidebar.html" %}
+            <!-- End Side Bar Section -->
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <section class="section">
+                    <div class="section-body">
+                        <!-- add content here -->
+                        <center>
+                            <h2>FORM TERORIST</h2><br>
+                        </center>
+                        <!-- <div class="row"> -->
+                        <div class="card">
+                            <form id="teroristForm" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+
+
+
+                                <!-- Goobta  Info -->
+                                <div class="card-header">
+                                    <h4>GOOBTA WARBIXINTA <span style="text-transform: uppercase;"
+                                            class="case-text"></span> </h4>
+                                </div>
+
+
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Degmada</label>
+                                                <select name="district" class="form-control" id="district" required>
+                                                    <option value="">Dooro Degmada Aad Joogto</option>
+                                                    <option value="Boondeere" data-foo="BND">Boondheere </option>
+                                                    <option value="Cabdicasiis" data-foo="CBS">Cabdicasiis</option>
+                                                    <option value="Deyniile" data-foo="DNL">Deyniile</option>
+                                                    <option value="Dharkeenley" data-foo="DHR">Dharkeenley</option>
+                                                    <option value="Hodan" data-foo="HDN">Hodan</option>
+                                                    <option value="Howlwadaag" data-foo="HWG">Howlwadaag</option>
+                                                    <option value="Huriwaa" data-foo="HRW">Huriwaa</option>
+                                                    <option value="Kaxda" data-foo="KXD">Kaxda</option>
+                                                    <option value="Kaaraan" data-foo="KRN">Kaaraan</option>
+                                                    <option value="Shibis" data-foo="SHB">Shibis</option>
+                                                    <option value="Shingaani" data-foo="SHN">Shingaani</option>
+                                                    <option value="Waaberi" data-foo="WBR">Waaberi</option>
+                                                    <option value="Wadajir" data-foo="WDJ">Huriwaa</option>
+                                                    <option value="Wartanabad" data-foo="WRN">Wartanabada</option>
+                                                    <option value="Xamarjajab" data-foo="XJB">Xamarjajab</option>
+                                                    <option value="Xamarweyne" data-foo="XWN">Xamarweyne</option>
+                                                    <option value="Yaaqshiid" data-foo="YQD">Yaaqshiid</option>
+                                                    <option value="Daarusalaam" data-foo="DRS">Daarusalaam</option>
+                                                    <option value="Gubadley" data-foo="GBL">Gubadley</option>
+                                                    <option value="Garasbaalay" data-foo="GRS">Garasbaalay</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Waaxda</label>
+                                                <input type="text" class="form-control" id="unit" required
+                                                    placeholder="Soo Geli Magaca Waaxda ">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Laanta </label>
+                                                <input type="text" class="form-control" id="sub_unit" required
+                                                    placeholder="Soo Geli Magaca Laanta">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+
+                                <!-- End Goobta  Info -->
+
+                                <!-- Xaalada Info -->
+
+                                <div class="card-header">
+                                    <h4>NOOCA WARBIXINTA </h4>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Xaalada Warbixinta</label>
+                                                <select name="status" class="form-control" id="status" required>
+                                                    <option value="">Dooro Xaalada</option>
+                                                    <option value="Casaan">Casaan</option>
+                                                    <option value="Jaalle">Jaalle</option>
+                                                    <option value="Cagaar">Cagaar</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Dadweynaha Warbixinta</label>
+                                                <select name="info" class="form-control" id="info" required>
+                                                    <option value="">Dooro Dadweynaha</option>
+                                                    <option value="Guriga Martida">Guriga Martida</option>
+                                                    <option value="la-taliyaasha Gudoomiyaha">la-taliyaasha Gudoomiyaha
+                                                    </option>
+                                                    <option value="Tobabarayaasha">Tobabarayaasha</option>
+                                                    <option value="Ubaxa Degmada">Ubaxa Degmada</option>
+                                                    <option value="Qalbka Degmada">Qalbka Degmada</option>
+                                                    <option value="Kuwa Kale">Kuwa Kale</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- End Of Xaalada Info  -->
+
+
+
+                                <!-- Faahfaahinta Info -->
+
+                                <div class="card-header">
+                                    <h4>FAAHFAAHINTA <span style="text-transform: uppercase;" class="case-text"></span>
+                                    </h4>
+                                </div>
+
+
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Faah-Faainta Sawirka</label>
+
+                                                <input type="file" id="image" name="image" class="form-control"
+                                                    accept="image/*" required />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Faah-Faainta Warbixinta</label>
+                                                <textarea name="description" id="description" cols="100" rows="100"
+                                                    class="form-control" required
+                                                    placeholder="Soo Geli Warbixnta oo Faah Faahsan Description"></textarea>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- End Of Faahfaahinta Info -->
+
+
+
+
+
+                                <div class="card-footer text-right">
+                                    <button class="btn btn-primary mr-1" type="submit">Submit</button>
+                                    <button class="btn btn-secondary" type="reset">Reset</button>
+                                </div>
+
+
+                            </form>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+
+
+
+
+
+
+                    <!-- <div class="row clearfix">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>New Traffic Form</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="trafficForm" method="POST">
+
+                                            {% csrf_token %}
+                                            <h3>Driver Information</h3>
+                                            <fieldset>
+                                                <div class="form-group form-float">
+                                                    <div class="form-line">
+                                                        <label class="form-label">Driver Name*</label>
+                                                        <input type="text" class="form-control" name="name" id="name"
+                                                            required />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group form-float">
+                                                    <div class="form-line">
+                                                        <label class="form-label">Organization*</label>
+                                                        <select name="section1" id="section" class="form-control"
+                                                            required>
+                                                            <option value="">Choose one</option>
+                                                            {% for section in sections %}
+                                                            <option value="{{section.id}}">{{section.section}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group form-float">
+                                                    <div class="form-line">
+                                                        <label>Institions*</label>
+                                                        <select name="" id="institution" class="form-control" required>
+                                                            <option value=""></option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-group form-float">
+                                                    <div class="form-line">
+                                                        <label class="form-label">Title*</label>
+                                                        <input type="text" class="form-control" id="title" name="title"
+                                                            required />
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            <h3>Vehicle Information</h3>
+                                            <fieldset>
+                                                <div class="form-group form-float">
+                                                    <div class="form-line">
+                                                        <label class="form-label">Plate Code*</label>
+                                                        <input type="text" name="pcode" class="form-control"
+                                                            id="plate_code" minlength="2" maxlength="2" required
+                                                            style="text-transform: uppercase;"
+                                                            oninput="this.value = this.value.toUpperCase()" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group form-float">
+                                                    <div class="form-line">
+                                                        <label class="form-label">Plate Number*</label>
+                                                        <input type="text" name="pnumber" id="plate_number"
+                                                            class="form-control" minlength="4" maxlength="4" required />
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group form-float">
+                                                    <div class="form-line">
+                                                        <label class="form-label">Male Passengers*</label>
+                                                        <input type="number" min="0" name="malePassenger"
+                                                            placeholder="Enter Number Male Passengers"
+                                                            class="form-control" id="malePassenger" required />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group form-float">
+                                                    <div class="form-line">
+                                                        <label class="form-label">Female Passengers*</label>
+                                                        <input type="number" min="0" name="femalePassenger"
+                                                            placeholder="Enter Number Male Passengers"
+                                                            class="form-control" id="femalePassenger" required />
+                                                    </div>
+                                                </div>
+
+                                            </fieldset>
+                                            <h3>Driver Identification Cards</h3>
+                                            <fieldset>
+                                                <div class="form-group form-float">
+                                                    <div class="form-line">
+                                                        <label class="form-label">Front Image*</label>
+                                                        <input type="file" id="front_image" name="frontImage"
+                                                            accept="image/*" capture="user" required />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group form-float">
+                                                    <div class="form-line">
+                                                        <label class="form-label">Back Image*</label>
+                                                        <input type="file" id="back_image" name="backImage"
+                                                            accept="image/*" capture="user" required />
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  -->
+            </div>
+
+        </div>
+        </section>
+    </div>
+
+    <!-- Footbar Section -->
+    {% include "includes/footer.html" %}
+    <!-- EndFootbar Section -->
+    </div>
+    </div>
+
+    <!-- Scripts -->
+    {% include "includes/scripts.html" %}
+
+    <script src="{% static 'assets/scripts/Case/case.js' %}"></script>
+
+</body>
+
+<!-- blank.html  21 Nov 2019 03:54:41 GMT -->
+
+</html>

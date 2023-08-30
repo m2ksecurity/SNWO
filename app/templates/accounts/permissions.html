@@ -1,0 +1,232 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head Section -->
+{% include "includes/head.html" %}
+<!-- End Head Section -->
+
+<body>
+  <div class="loader"></div>
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+
+      <!-- Nav Bar Section  -->
+      {% include "includes/nav.html" %}
+      <!-- End Nav Bar Section -->
+
+      <!-- Side Bar Section -->
+      {% include "includes/sidebar.html" %}
+      <!-- End Side Bar Section -->
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Permissions </h4>
+                  </div>
+                  <!-- Button trigger modal -->
+
+                  <div class="card-body">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newUser">
+                      <i data-feather="user-plus"></i>
+                    </button>
+                    <div class="table-responsive">
+                      <table class="table table-striped " id="myTableExport" style="width: 100%">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Content Type</th>
+                            <th>Code Name</th>
+                            <th>Permission</th </tr>
+                            <th>Actions</th </tr>
+                        </thead>
+                        <tbody>
+                          {% for perm in permissions %}
+                          <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{perm.content_type.app_label}}.{{perm.content_type.model}}</td>
+                            <td>{{perm.codename}}</td>
+                            <td>{{perm.name}}</td>
+
+                            <td>
+                              <button class="btn btn-icon btn-danger deletePermission" data-id="{{perm.id}}">
+                                <i class="fas fa-trash"></i>
+                              </button>
+                              <button class="btn btn-icon btn-info editPermission" data-id="{{perm.id}}"
+                                data-content_id="{{perm.content_type.id}}" data-name="{{perm.name}}"
+                                data-codename="{{perm.codename}}">
+                                <i class="fas fa-edit"> </i>
+                              </button>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="newUser" tabindex="-1" role="dialog" aria-labelledby="sectionRegister"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="sectionRegister">
+                Registeration
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="registerSection" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label>Content Type</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-layer-group"></i>
+                      </div>
+                    </div>
+                    <select name="content_type" id="content_type" class="form-control" required>
+                      <option value="">Select One </option>
+                      {% for content in content_types %}
+                      <option value="{{content.id}}">{{content.app_label}}.{{content.model}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Code Name</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                      </div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Code Name" name="code_name" id="code_name"
+                      required />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Name</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-key"></i>
+                      </div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Permission Name" name="name" id="name"
+                      required />
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary m-t-15 waves-effect">
+                  Save
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Modal -->
+
+      <!-- Edit ModaleModal -->
+      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="sectionRegister"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="sectionRegister">
+                Update <span id="info"></span>'s Content
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              {% csrf_token %}
+              <form id="updateForm" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label>Content Type</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-layer-group"></i>
+                      </div>
+                    </div>
+                    <select name="content_type" id="up_content_type" class="form-control" required>
+                      <option value="">Select One </option>
+                      {% for content in content_types %}
+                      <option value="{{content.id}}">{{content.app_label}}.{{content.model}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Code Name</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                      </div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Code Name" name="up_code_name"
+                      id="up_code_name" required />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Name</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-key"></i>
+                      </div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Permission Name" name="up_name" id="up_name"
+                      required />
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary m-t-15 waves-effect">
+                  Save
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Modal -->
+
+      <!-- Footbar Section -->
+      {% include "includes/footer.html" %}
+      <!-- EndFootbar Section -->
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  {% include "includes/scripts.html" %}
+
+  <script src="{% static 'assets/scripts/account/permission.js' %}"></script>
+</body>
+
+<!-- blank.html  21 Nov 2019 03:54:41 GMT -->
+
+</html>

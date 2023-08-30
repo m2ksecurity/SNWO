@@ -1,0 +1,280 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- datatables.html  21 Nov 2019 03:55:21 GMT -->
+<!-- Header Section -->
+{% include "includes/head.html" %}
+<!-- End Header Section -->
+
+<body>
+  <div class="loader"></div>
+
+
+  
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+
+           <!-- Nav Bar Section  -->
+        {% include "includes/nav.html" %}
+        <!-- End Nav Bar Section -->
+        
+        <!-- Side Bar Section -->
+        {% include "includes/sidebar.html" %}        
+        <!-- End Side Bar Section -->
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>House</h4>
+                  </div>
+                  <!-- Button trigger modal -->
+                   
+                  <div class="card-body">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newUser">
+                        <i data-feather="user-plus"></i>
+                    </button>
+
+                    <div class="table-responsive">
+                      <table class="table table-striped" id="table-1">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>District</th>
+                            <th>House Type</th>
+                            <th>House No</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          {% for house in data %}
+                          <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ house.district }}</td>
+                            <td>{{ house.type }}</td>
+                            <td>{{ house.houseno }}</td>
+                            <td>
+                              <a 
+                              class="btn btn-primary btn-sm houseEdit" 
+                              data-toggle="modal" 
+                              data-id="{{ house.id }}"
+                              data-district="{{ house.district }}"
+                              data-type="{{ house.type }}"
+                              data-houseno="{{ house.houseno }}"
+                              >
+                                <i data-feather="edit"></i>
+                              </a>
+
+                              <a 
+                              class="btn btn-danger btn-sm houseDelete" 
+                              data-id="{{ house.id }}" 
+                              data-toggle="modal"
+                              >
+                                <i data-feather="trash"></i>
+                              </a>
+                              
+                                
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                        <tfooter>
+                          <tr>
+                            <th>#</th>
+                            <th>District</th>
+                            <th>House Type</th>
+                            <th>House No</th>
+                            <th>Action</th>
+                          </tr>
+                        </tfooter>
+
+                      </table>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- Register Modal -->
+        <div class="modal fade" id="newUser" tabindex="-1" role="dialog" aria-labelledby="userRegister" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="userRegister">Registeration House</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  {% csrf_token %}
+
+                  <form method="POST" id="registerForm">
+                    <div class="form-group">
+                      <label>District</label>
+                    <select id="district" class="form-control" required>
+                      <option value="">Select one of them </option>
+                      <option value="Boondeere" data-foo="BND" >Boondheere </option>
+                      <option value="Cabdicasiis" data-foo="CBS">Cabdicasiis</option>
+                      <option value="Deyniile" data-foo="DNL">Deyniile</option>
+                      <option value="Dharkeenley" data-foo="DHR">Dharkeenley</option>
+                      <option value="Hodan" data-foo="HDN">Hodan</option>
+                      <option value="Howlwadaag" data-foo="HWG">Howlwadaag</option>
+                      <option value="Huriwaa" data-foo="HRW">Huriwaa</option>
+                      <option value="Kaxda" data-foo="KXD">Kaxda</option>
+                      <option value="Kaaraan" data-foo="KRN">Kaaraan</option>
+                      <option value="Shibis" data-foo="SHB">Shibis</option>
+                      <option value="Shingaani" data-foo="SHN">Shingaani</option>
+                      <option value="Waaberi" data-foo="WBR">Waaberi</option>
+                      <option value="Wadajir" data-foo="WDJ">Huriwaa</option>
+                      <option value="Wartanabad" data-foo="WRN">Wartanabada</option>
+                      <option value="Xamarjajab" data-foo="XJB">Xamarjajab</option>
+                      <option value="Xamarweyne" data-foo="XWN">Xamarweyne</option>
+                      <option value="Yaaqshiid" data-foo="YQD">Yaaqshiid</option>
+                      <option value="Daarusalaam" data-foo="DRS">Daarusalaam</option>
+                      <option value="Gubadley" data-foo="GBL">Gubadley</option>
+                      <option value="Garasbaalay" data-foo="GRS">Garasbaalay</option>
+                    </select>
+                     
+      
+                      <label>House Type</label>
+                      <select id="type" class="form-control" required>
+                        <option value="">Select one of them </option>
+                        <option value="Apartement">Apartment </option>
+                        <option value="Villo">Villo</option>
+                        <option value="Jiingad">Jiingad</option>
+                      </select>
+
+                      <label>House No</label>
+                      <input type="number" class="form-control" id="houseno" placeholder="e.g 001" required>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" id="btnSave" class="btn btn-primary">Save</button>                  
+          
+                    </div>
+
+                  </form>
+
+                </div>
+                <!-- <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        <!-- End Modal -->
+
+
+         <!-- Update Modal -->
+        <div class="modal fade" id="UpdateHouse" tabindex="-1" role="dialog" aria-labelledby="userRegister" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="userRegister">Upadte House</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                {% csrf_token %}
+
+                <form method="POST" id="updateForm">
+                  <div class="form-group">
+                    <label>District</label>
+                  <select id="udistrict" class="form-control" required>
+                    <option value="">Select one of them </option>
+                    <option value="Boondeere" data-foo="BND" >Boondheere </option>
+                    <option value="Cabdicasiis" data-foo="CBS">Cabdicasiis</option>
+                    <option value="Deyniile" data-foo="DNL">Deyniile</option>
+                    <option value="Dharkeenley" data-foo="DHR">Dharkeenley</option>
+                    <option value="Hodan" data-foo="HDN">Hodan</option>
+                    <option value="Howlwadaag" data-foo="HWG">Howlwadaag</option>
+                    <option value="Huriwaa" data-foo="HRW">Huriwaa</option>
+                    <option value="Kaxda" data-foo="KXD">Kaxda</option>
+                    <option value="Kaaraan" data-foo="KRN">Kaaraan</option>
+                    <option value="Shibis" data-foo="SHB">Shibis</option>
+                    <option value="Shingaani" data-foo="SHN">Shingaani</option>
+                    <option value="Waaberi" data-foo="WBR">Waaberi</option>
+                    <option value="Wadajir" data-foo="WDJ">Huriwaa</option>
+                    <option value="Wartanabad" data-foo="WRN">Wartanabada</option>
+                    <option value="Xamarjajab" data-foo="XJB">Xamarjajab</option>
+                    <option value="Xamarweyne" data-foo="XWN">Xamarweyne</option>
+                    <option value="Yaaqshiid" data-foo="YQD">Yaaqshiid</option>
+                    <option value="Daarusalaam" data-foo="DRS">Daarusalaam</option>
+                    <option value="Gubadley" data-foo="GBL">Gubadley</option>
+                    <option value="Garasbaalay" data-foo="GRS">Garasbaalay</option>
+                  </select>
+                   
+    
+                    <label>House Type</label>
+                    <select id="utype" class="form-control" required>
+                      <option value="">Select one of them </option>
+                      <option value="Apartement">Apartment </option>
+                      <option value="Villo">Villo</option>
+                      <option value="Jiingad">Jiingad</option>
+                    </select>
+
+                    <label>House No</label>
+                    <input type="text" class="form-control" id="uhouseno" placeholder="e.g 001" required><br>
+                    <input type="text" class="form-control" id="uid" hidden required>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnSave" class="btn btn-primary">Save</button>                  
+        
+                  </div>
+
+                </form>
+
+              </div>
+              <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      <!-- End Modal -->
+
+        <!-- Setting Bar Sections -->
+        {% include "includes/settingbar.html" %}        
+        <!-- Ending Setting Bar Sections -->
+
+
+      </div>
+
+      <!-- Footbar Section -->
+      {% include "includes/footer.html" %}
+      <!-- EndFootbar Section -->
+
+    </div>
+  </div>
+
+
+
+
+  <!-- General JS Scripts -->
+
+  <!-- Scripts Section -->
+  {% include "includes/scripts.html" %}
+  
+  <script src="{% static 'assets/scripts/enviroment/house.js' %}"></script>
+  <!-- End Scripts Section -->
+</body>
+
+{{ redirect_to_login_immediately }}
+<!-- datatables.html  21 Nov 2019 03:55:25 GMT -->
+</html>

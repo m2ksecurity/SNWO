@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- datatables.html  21 Nov 2019 03:55s:21 GMT -->
+<!-- Header Section -->
+{% include "includes/head.html" %}
+<!-- End Header Section -->
+
+<body>
+  <div class="loader"></div>
+
+
+  
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+
+           <!-- Nav Bar Section  -->
+           <div id="hiddenNav">
+
+             {% include "includes/nav.html" %}
+            </div>
+        <!-- End Nav Bar Section -->
+        
+        <!-- Side Bar Section -->
+        <div id="hiddenSide">
+
+          {% include "includes/sidebar.html" %}        
+        </div>
+        <!-- End Side Bar Section -->
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header" id="hiddecardheader">
+                    <h4>Transactions</h4>
+                  </div>
+                  <!-- Button trigger modal -->
+                   
+                  <div class="card-body">
+                    <!-- <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newUser">
+                        <i data-feather="user-plus"></i>
+                    </button> -->
+                    <div id="hiddenTable">
+                      <div class="table-responsive">
+                        <table class="table table-striped" id="table-1">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Payer</th>
+                              <th>Account</th>
+                              <th>Date</th>
+                              <th>price</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody id="tbody_data">
+
+                            
+                            {% for data in dataTransaction %}
+                            <tr>
+                              <td>{{forloop.counter}}</td>
+                              <td>{{data.service.enviroment.renter.name}}- 
+                                ({{data.service.enviroment.renter.tell}}) - 
+                                Degmada {{data.service.enviroment.house.district}} ({{data.service.enviroment.house.type}}-
+                                {{data.service.enviroment.house.houseno}})
+                              </td>
+                              <td>{{data.account}}</td>
+                              <td>{{data.date|timesince}}</td>
+                              <td>${{data.price}}.00</td>
+                              <td>
+                                {% csrf_token %}
+                                <i 
+                                data-feather="eye" 
+                                class="btn btn-primary btn-sm viewTransaction"
+                                data-id="{{data.id}}"
+                                data-renter="{{data.service.enviroment.renter.name}}"
+                                data-tel="{{data.service.enviroment.renter.tell}}"
+                                data-martial="{{data.service.enviroment.renter.martial_status}}"
+                                data-type="{{data.service.enviroment.house.type}}"
+                                data-district="{{data.service.enviroment.house.district}}"
+                                data-houseno="{{data.service.enviroment.house.houseno}}"
+                                data-date="{{data.date}}"
+                                data-price="{{data.price}}"
+                                data-year="{{currentYear}}"
+                                >
+                                  <button class=""></button>
+                                </i>
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                          <tfooter>
+                            <tr>
+                              <th>#</th>
+                              <th>Payer</th>
+                              <th>Account</th>
+                              <th>Date</th>
+                              <th>price</th>
+                              <th>Action</th>
+                            </tr>
+                          </tfooter>
+
+                        </table>
+
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="invoice" tabindex="-1" role="dialog" aria-labelledby="userRegister" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="userRegister"></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <!-- Invoice Title -->
+                    <center>
+
+                      <h1>INVOICE</h1><br>
+                    </center>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                          <label for="inputState" style="font-size: large;"><b>Date</b></label>
+                          <span style="font-size: medium;" id="today">{{today}}</span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                          <label hidden  for="inputState" style="font-size: larger;"><b>Ref</b></label>
+                          <span hidden style="font-size: medium;">TEst</span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                          <label for="inputState" style="font-size: larger;"><b>Ref</b></label>
+                          <span style="font-size: large;" id="refno"></span>
+                        </div>
+                        
+                    </div>
+                      <!-- End Invoice Title -->
+
+
+                      <!-- Renter Info -->
+                      <center>
+
+                        <h4>Renter Info</h4><br>
+                      </center>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                          <label for="inputState" style="font-size: large;"><b>Name</b></label><br>
+                          <span style="font-size: medium;" id="name"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputState" style="font-size: large;"><b>Tell</b></label><br>
+                          <span style="font-size: medium;" id="Intelephone"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputState" style="font-size: large;"><b>Martial Status</b></label><br>
+                          <span style="font-size: medium;" id="Inmartial"></span>
+                        </div>
+                    </div>
+                    <!-- end Renter Info -->
+
+                      <!-- House Info -->
+                      <center>
+
+                        <h4>House Info</h4><br>
+                      </center>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                          <label for="inputState" style="font-size: large;"><b>District</b></label><br>
+                          <span style="font-size: medium;" id="Indistrict"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputState" style="font-size: large;"><b>House Type</b></label><br>
+                          <span style="font-size: medium;" id="Intype"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputState" style="font-size: large;"><b>House Number</b></label><br>
+                          <span style="font-size: medium;" id="Inhouseno"></span>
+                        </div>
+                    </div>
+                    <!-- end House Info -->
+
+                      <!-- Description Info -->
+                      
+                    <div class="form-row">
+                        <span style="font-size: medium;">
+                            Mudane\Marwo <b id="customerinfo"></b> waad ku mahadsan tahay bixinta lacagata
+                            bisha <b id="datepay"></b> iyo mudada aad ku bixisay lacgta bisha oo ah <b id="amount"></b>
+                            soo dhawaaw mar labaad
+                        </span>
+                    </div>
+                    <!-- end House Info -->
+
+
+
+
+                  </div>
+                <div class="modal-footer">
+                  <i data-feather="printer" class="btn btn-primary btn-sm printer">
+                    <button class=""></button>
+                  </i>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- End Modal -->
+
+        <!-- Setting Bar Sections -->
+        <div id="hiddenSetting">
+          {% include "includes/settingbar.html" %}        
+
+        </div>
+        <!-- Ending Setting Bar Sections -->
+
+
+      </div>
+
+      <!-- Footbar Section -->
+      <div id="hiddenFooter">
+
+        {% include "includes/footer.html" %}
+      </div>
+      <!-- EndFootbar Section -->
+
+    </div>
+  </div>
+
+
+
+
+  <!-- General JS Scripts -->
+
+  <!-- Scripts Section -->
+  {% include "includes/scripts.html" %}
+  <script src="{% static 'assets/scripts/enviroment/Transaction.js' %}"></script>
+  <!-- End Scripts Section -->
+</body>
+
+{{ redirect_to_login_immediately }}
+<!-- datatables.html  21 Nov 2019 03:55:25 GMT -->
+</html>

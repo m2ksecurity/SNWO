@@ -1,0 +1,315 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<!-- index.html  21 Nov 2019 03:44:50 GMT -->
+
+<!-- Head Section -->
+{% include "includes/head.html" %}
+<!-- End Head Section -->
+
+<body>
+  <div class="loader"></div>
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+
+      <!-- Nav Bar Section  -->
+      {% include "includes/nav.html" %}
+      <!-- End Nav Bar Section -->
+
+      <!-- Side Bar Section -->
+      {% include "includes/sidebar.html" %}
+      <!-- End Side Bar Section -->
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          {% if user.is_superuser %}
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+              <div class="card card-statistic-1">
+                <div class="card-icon l-bg-purple">
+                  <i class="fas fa-traffic-light"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="padding-20">
+                    <div class="text-right">
+                      <h3 class="font-light mb-0">
+                        <i class="ti-arrow-up text-success"></i>
+                        {{totalTerorist}}
+                      </h3>
+                      <span class="text-muted"><b>Terorist Cases </b></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+              <div class="card card-statistic-1">
+                <div class="card-icon l-bg-green">
+                  <i class="fas fa-car"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="padding-20">
+                    <div class="text-right">
+                      <h3 class="font-light mb-0">
+                        <i class="ti-arrow-up text-success"></i>
+                        {{totalCases}}
+                      </h3>
+                      <span class="text-muted"><b>Normal Cases</b></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+              <div class="card card-statistic-1">
+                <div class="card-icon l-bg-cyan">
+                  <i class="fas fa-users"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="padding-20">
+                    <div class="text-right">
+                      <h3 class="font-light mb-0">
+                        <i class="ti-arrow-up text-success"></i>
+                        {{total_users}}
+                      </h3>
+                      <span class="text-muted"><b>Users</b></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+              <div class="card card-statistic-1">
+                <div class="card-icon l-bg-purple">
+                  <i class="fas fa-traffic-light"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="padding-20">
+                    <div class="text-right">
+                      <h3 class="font-light mb-0">
+                        <i class="ti-arrow-up text-success"></i>
+                        {{user_terorist}}
+                      </h3>
+                      <span class="text-muted"><b>Terorist Cases </b></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+              <div class="card card-statistic-1">
+                <div class="card-icon l-bg-green">
+                  <i class="fas fa-car"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="padding-20">
+                    <div class="text-right">
+                      <h3 class="font-light mb-0">
+                        <i class="ti-arrow-up text-success"></i>
+                        {{user_case}}
+                      </h3>
+                      <span class="text-muted"><b>Normal Cases</b></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% if perms.app.view_user %}
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+              <div class="card card-statistic-1">
+                <div class="card-icon l-bg-cyan">
+                  <i class="fas fa-users"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="padding-20">
+                    <div class="text-right">
+                      <h3 class="font-light mb-0">
+                        <i class="ti-arrow-up text-success"></i>
+                        {{total_users}}
+                      </h3>
+                      <span class="text-muted"><b>Users</b></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+          {% endif %}
+
+          <!-- Charts  -->
+          {% if user.is_superuser %}
+          <div class="row">
+            <div class="col-12 col-sm-12 col-lg-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Statistics</h4>
+                  <div class="card-header-action">
+                    <a href="#" class="btn active">Week</a>
+                    <a href="#" class="btn">Month</a>
+                    <a href="#" class="btn">Year</a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="trafficCharts" height="100"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Double Chart and Pie Chart -->
+          <div class="row">
+            <div class="col-md-4 col-lg-8 col-xl-6">
+              <!-- Lateast Activitys -->
+
+              <div class="card">
+                <div class="card-header">
+                  <h4>Top Cases Status</h4>
+                </div>
+                <div class="card-body">
+                  <div class="recent-report__chart">
+                    <div id="chart7"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- Lateast Activitys -->
+            </div>
+            <div class="col-md-4 col-lg-8 col-xl-6">
+              <!-- Lateast Activitys -->
+
+              <div class="card">
+                <div class="card-header">
+                  <h4>Top Users Chart</h4>
+                </div>
+                <div class="card-body">
+                  <div class="recent-report__chart">
+                    <div id="institutioChart"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- Lateast Activitys -->
+            </div>
+          </div>
+
+
+
+
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-xl-12">
+              <!-- Lateast Activitys -->
+
+              <div class="card">
+                <div class="card-header">
+                  <h4>latest User Activity</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>User</th>
+                          <th>message</th>
+                          <th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for data in user_logs %}
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td>
+                            {{data.user}}
+                          </td>
+                          <td>{{data.message}}</td>
+                          <td>{{data.created_at|timesince}} ago</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- Lateast Activitys -->
+            </div>
+            <!-- <div class="col-md-6 col-lg-12 col-xl-6"> -->
+            <!-- Lateast Activitys -->
+
+            <!-- <div class="card">
+                <div class="card-header">
+                  <h4>latest Activity</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Renter</th>
+                          <th>House</th>
+                          <th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for Enviroment in topEnviroment %}
+                        <tr>
+                          <td>{{ forloop.counter }}</td>
+                          <td>{{ Enviroment.renter.name }}</td>
+                          <td>
+                            {{ Enviroment.house.district }}-{{
+                            Enviroment.house.houseno }} ({{
+                            Enviroment.house.type }})
+                          </td>
+                          <td>{{ Enviroment.register_date }}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div> -->
+            <!-- Lateast Activitys -->
+            <!-- </div> -->
+          </div>
+          {% endif %}
+
+        </section>
+
+        <!-- {% for role in user.groups.all %}
+        <h1>{{role.name}}</h1>
+        {% endfor %} -->
+
+        <!-- Setting Bar Sections -->
+
+        <!-- Ending Setting Bar Sections -->
+      </div>
+
+
+
+
+      <!-- Footbar Section -->
+      {% include "includes/footer.html" %}
+      <!-- EndFootbar Section -->
+    </div>
+  </div>
+
+  <!-- General JS Scripts -->
+  {% include "includes/scripts.html" %}
+  <!-- Scripts -->
+
+  <script src="{% static 'assets/scripts/Dashboard.js' %}"></script>
+  <script></script>
+</body>
+
+{{ redirect_to_login_immediately }}
+<!-- index.html  21 Nov 2019 03:47:04 GMT -->
+
+</html>

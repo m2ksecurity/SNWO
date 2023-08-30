@@ -1,0 +1,234 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<!-- datatables.html  21 Nov 2019 03:55:21 GMT -->
+<!-- Header Section -->
+{% include "includes/head.html" %}
+<!-- End Header Section -->
+
+<body>
+    <div class="loader"></div>
+
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="navbar-bg"></div>
+
+            <!-- Nav Bar Section  -->
+            {% include "includes/nav.html" %}
+            <!-- End Nav Bar Section -->
+
+            <!-- Side Bar Section -->
+            {% include "includes/sidebar.html" %}
+            <!-- End Side Bar Section -->
+            <!-- Main Content -->
+            <div class="main-content">
+                <section class="section">
+                    <div class="section-body">
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Institutions</h4>
+                                </div>
+                                <div class="card-body">
+
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                        data-target="#newUser">
+                                        <i data-feather="user-plus"></i>
+                                    </button><br>
+                                    <br>
+                                    <div class="row">
+
+                                        {% for section in allSection %}
+                                        {% with num=forloop.counter|add:'1' %}
+
+                                        <div class="col-12 col-md-4 col-lg-4">
+                                            <div id="accordion">
+                                                <div class="accordion" id="my-data">
+                                                    <div class="accordion-header" role="button" data-toggle="collapse"
+                                                        id="tbshow" data-target="#clo{{num}}" aria-expanded="true">
+                                                        <h4>
+                                                            {{forloop.counter}} - {{section.section}}
+                                                            -{{section.institutions.count}} institutions -
+                                                            {{section.created_at|timesince}} ago
+                                                        </h4>
+                                                    </div>
+                                                    <div class="accordion-body collapse" id="clo{{num}}"
+                                                        data-parent="#accordion">
+                                                        {% for institute in section.institutions.all %}
+                                                        <span>{{forloop.counter}}. </span>
+                                                        <span>{{institute.institution}}</span> |
+                                                        <span>{{institute.created_at|timesince}} ago</span><br />
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endwith %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Institions</h4>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                            data-target="#newUser">
+                                            <i data-feather="user-plus"></i>
+                                        </button>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover" id="myTableExport"
+                                                style="width: 100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Section</th>
+                                                        <th>Institions</th>
+                                                        <th>Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for institute in institutions %}
+                                                    <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{institute.section.section}}</td>
+                                                        <td>{{institute.institution}}</td>
+                                                        <td>{{institute.created_at|timesince}} ago</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </section>
+
+                <!-- Modal -->
+                <div class="modal fade" id="newUser" tabindex="-1" role="dialog" aria-labelledby="institutionRegister"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="institutionRegister">
+                                    Registeration
+                                    <!-- <span id="detail_id" hidden>{{detail.id}}</span> -->
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="registerInstitutionwithSection" method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label>Section </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-university"></i>
+                                                </div>
+                                            </div>
+                                            <select name="section" id="section" class="form-control" required>
+                                                <option value="">Select One</option>
+                                                {% for section in allSection %}
+                                                <option value="{{section.id}}">
+                                                    {{section.section}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Institions </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-university"></i>
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="Institions Name"
+                                                name="institution" id="institutionName" required />
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary m-t-15 waves-effect">
+                                        Save
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal -->
+
+                <!-- Edit ModaleModal -->
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="institutionRegister"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="institutionRegister">
+                                    Update <span id="user-info"></span>'s Institions
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {% csrf_token %}
+                                <form id="updateForm" method="POST">
+                                    <div class="form-group">
+                                        <label>Institions </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-university"></i>
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="Institions Name"
+                                                name="up-institution" id="up-institutionName" required />
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success m-t-15 waves-effect">
+                                        Update
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal -->
+
+                <!-- Setting Bar Sections -->
+                {% include "includes/settingbar.html" %}
+                <!-- Ending Setting Bar Sections -->
+            </div>
+
+            <!-- Footbar Section -->
+            {% include "includes/footer.html" %}
+            <!-- EndFootbar Section -->
+        </div>
+    </div>
+
+    <!-- General JS Scripts -->
+
+    <!-- Scripts Section -->
+    {% include "includes/scripts.html" %}
+    <!-- End Scripts Section -->
+    <script src="{% static 'assets/scripts/section/institution.js' %}"></script>
+</body>
+
+{{ redirect_to_login_immediately }}
+<!-- datatables.html  21 Nov 2019 03:55:25 GMT -->
+
+</html>

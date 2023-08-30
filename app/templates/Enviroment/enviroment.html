@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- datatables.html  21 Nov 2019 03:55:21 GMT -->
+<!-- Header Section -->
+{% include "includes/head.html" %}
+<!-- End Header Section -->
+
+<body>
+  <div class="loader"></div>
+
+
+  
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+
+           <!-- Nav Bar Section  -->
+        {% include "includes/nav.html" %}
+        <!-- End Nav Bar Section -->
+        
+        <!-- Side Bar Section -->
+        {% include "includes/sidebar.html" %}        
+        <!-- End Side Bar Section -->
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Enviroment</h4>
+                  </div>
+                  <!-- Button trigger modal -->
+                   
+                  <div class="card-body">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newEnviroment">
+                        <i data-feather="user-plus"></i>
+                    </button>
+
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover" id="save-stage" style="width:100%;">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Renter</th>
+                            <th>House</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="tbody_data">
+
+                          {% for Enviroment in enviromentData %}
+                          <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ Enviroment.renter.name }}</td>
+                            <td>{{ Enviroment.house.district }}-{{ Enviroment.house.houseno }} ({{ Enviroment.house.type }}) </td>
+                            <td>{{ Enviroment.register_date }}</td>
+                            <td>
+                              <a 
+                              class="btn btn-primary btn-sm EnviromentEdit" 
+                              data-toggle="modal" 
+                              data-id="{{ Enviroment.id }}"
+                              style="color: white;"
+                              >
+                                <i class="fas fa-exchange-alt"></i> Transfer House
+                              </a>  
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                        <tfooter>
+                          <tr>>
+                            <th>#</th>
+                            <th>Renter</th>
+                            <th>House</th>
+                            <th>Date</th>
+                            <!-- <th>Action</th> -->
+                          </tr>
+                        </tfooter>
+
+                      </table>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="newEnviroment" tabindex="-1" role="dialog" aria-labelledby="userRegister" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="userRegister">Registeration Enviroment</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  {% csrf_token %}
+
+                  <form method="POST" id="registerForm">
+                    <div class="form-group">
+                      <label>House No</label>
+                      <select id="houseno" class="form-control" required>
+                        <option value="">Select......</option>
+                        {% for house in houseData %}
+                            <option value="{{house.id}}">{{house.district}} ({{house.type}}) ({{house.houseno}})</option>
+                        {% endfor %}
+                      </select>
+
+                      <label>Renter</label>
+                      <select id="renter" class="form-control" required>
+                        <option value="">Select......</option>
+                        {% for renter in renterData %}
+                            <option value="{{renter.id}}">{{renter.name}} ({{renter.tell}}) ({{renter.martial_status}})</option>
+                        {% endfor %}
+                        
+                      </select>
+    
+                      <label>Martial Status</label>
+                      <input type="date" id="regoster_date" class="form-control" required>
+
+                    
+                    </div>
+
+                    
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" id="btnSave" class="btn btn-primary">Save</button>                  
+          
+                    </div>
+
+                  </form>
+
+                </div>
+                <!-- <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        <!-- End Modal -->
+
+
+         <!-- Update Modal -->
+         <div class="modal fade" id="updateEnviroment" tabindex="-1" role="dialog" aria-labelledby="userRegister" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="userRegister">Transfer Enviroment {{ Enviroment.id }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                {% csrf_token %}
+
+                
+
+                <form method="POST" id="updateForm">
+                  <div class="form-group">
+                    <label>Renter</label>
+                    <select id="urenter" class="form-control" required>
+                      <option value="">Select......</option>
+                      {% for renter in renterData %}
+                          <option value="{{renter.id}}">{{renter.name}} ({{renter.tell}}) ({{renter.martial_status}})</option>
+                      {% endfor %}
+                      
+                    </select>
+                    <input type="text" id="uid" class="form-control" required hidden>
+
+                  
+                  </div>
+
+                  
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnSave" class="btn btn-primary">Transfer</button>                  
+        
+                  </div>
+
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- End Modal -->
+
+        <!-- Setting Bar Sections -->
+        {% include "includes/settingbar.html" %}        
+        <!-- Ending Setting Bar Sections -->
+
+
+      </div>
+
+      <!-- Footbar Section -->
+      {% include "includes/footer.html" %}
+      <!-- EndFootbar Section -->
+
+    </div>
+  </div>
+
+
+
+
+  <!-- General JS Scripts -->
+
+  <!-- Scripts Section -->
+  {% include "includes/scripts.html" %}
+  
+  <script src="{% static 'assets/scripts/enviroment/enviroment.js' %}"></script>
+  <!-- End Scripts Section -->
+</body>
+
+{{ redirect_to_login_immediately }}
+<!-- datatables.html  21 Nov 2019 03:55:25 GMT -->
+</html>

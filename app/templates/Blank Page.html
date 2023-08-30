@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Head Section -->
+  {% include "includes/head.html" %}
+  <!-- End Head Section -->
+
+  <body>
+    <div class="loader"></div>
+    <div id="app">
+      <div class="main-wrapper main-wrapper-1">
+        <div class="navbar-bg"></div>
+
+        <!-- Nav Bar Section  -->
+        {% include "includes/nav.html" %}
+        <!-- End Nav Bar Section -->
+
+        <!-- Side Bar Section -->
+        {% include "includes/sidebar.html" %}
+        <!-- End Side Bar Section -->
+
+        <!-- Main Content -->
+        <div class="main-content">
+          <section class="section">
+            <div class="section-body">
+              <!-- add content here -->
+            </div>
+          </section>
+        </div>
+
+        <!-- Footbar Section -->
+        {% include "includes/footer.html" %}
+        <!-- EndFootbar Section -->
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    {% include "includes/scripts.html" %}
+  </body>
+
+  <!-- blank.html  21 Nov 2019 03:54:41 GMT -->
+</html>

@@ -1,0 +1,334 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<!-- datatables.html  21 Nov 2019 03:55:21 GMT -->
+<!-- Header Section -->
+{% include "includes/head.html" %}
+<!-- End Header Section -->
+
+<body>
+  <div class="loader"></div>
+
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+
+      <!-- Nav Bar Section  -->
+      {% include "includes/nav.html" %}
+      <!-- End Nav Bar Section -->
+
+      <!-- Side Bar Section -->
+      {% include "includes/sidebar.html" %}
+      <!-- End Side Bar Section -->
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>User Accounts</h4>
+                  </div>
+                  <!-- Button trigger modal -->
+
+                  <div class="card-body">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newUser">
+                      <i data-feather="user-plus"></i>
+                    </button>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover" id="myTableExport" style="width: 100%">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Date Joined</th>
+                            <th>Last Login On</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for user in users %}
+                          <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{user.first_name}} {{user.last_name}}</td>
+                            <td>{{user.email}}
+                              {% for group in user.groups.all %}
+                              <span>({{group.name}})</span>
+                              {% endfor %}
+                            </td>
+                            <td>{{user.username}}</td>
+                            <td>{{user.date_joined}}</td>
+                            <td>{{user.last_login|timesince}} ago</td>
+                            {% with active=user.is_active %} {% if active%}
+                            <td>
+                              <button class="btn btn-icon btn-danger disableAccount" data-id="{{user.id}}">
+                                <i class="fas fa-times"></i>
+                              </button>
+                              <button class="btn btn-icon btn-info editAccount" data-id="{{user.id}}"
+                                data-first_name="{{user.first_name}}" data-last_name="{{user.last_name}}"
+                                data-username="{{user.username}}" data-email="{{user.email}}">
+                                <i class="fas fa-edit"> </i>
+                              </button>
+                            </td>
+                            {% else %}
+                            <td>
+                              <button class="btn btn-icon btn-warning activeAccount" data-id="{{user.id}}">
+                                <i class="fas fa-check"></i>
+                              </button>
+                              <button class="btn btn-icon btn-info editAccount" data-id="{{user.id}}"
+                                data-first_name="{{user.first_name}}" data-last_name="{{user.last_name}}"
+                                data-username="{{user.username}}" data-email="{{user.email}}">
+                                <i class="fas fa-edit"> </i>
+                              </button>
+                            </td>
+                            {% endif %} {% endwith %}
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Modal -->
+        <div class="modal fade" id="newUser" tabindex="-1" role="dialog" aria-labelledby="userRegister"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="userRegister">
+                  Registeration Empolyee
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="register" method="POST">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label>first Name</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                      <input type="text" class="form-control" placeholder="first Name" name="first_name" id="first_name"
+                        required />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Last Name</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Last Name" name="last_name" id="last_name"
+                        required />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Username</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user-circle"></i>
+                        </div>
+                      </div>
+                      <input type="text" class="form-control" placeholder="User Name" name="user_name" id="user_name"
+                        required />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>User Type</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user-shield"></i>
+                        </div>
+                      </div>
+                      <select name="role" class="form-control" aria-label="Default select example" required>
+                        <option selected>User Type</option>
+                        <option value="superuser">Superuser</option>
+                        {% for role in roles %}
+                        <option value="{{role.name}}">{{role.name}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Email</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-envelope"></i>
+                        </div>
+                      </div>
+                      <input type="email" class="form-control" placeholder="Email" name="email" id="email" required />
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary m-t-15 waves-effect">
+                    Save
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="generateModal" tabindex="-1" role="dialog" aria-labelledby="userRegister"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="userRegister">
+                  Generate Password
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                {% csrf_token %}
+                <form id="activeAccountForm" method="POST">
+                  <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-lock"></i>
+                        </div>
+                      </div>
+                      <input type="password" class="form-control" placeholder="Generate New Password" name="password"
+                        id="password" required />
+                    </div>
+                    <input type="text" class="form-control" name="userid" id="userid" required hidden />
+                  </div>
+                  <button type="submit" class="btn btn-primary m-t-15 waves-effect">
+                    Active
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal -->
+        <!-- Edit ModaleModal -->
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="userRegister"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="userRegister">
+                  Update <span id="user-info"></span>'s Account
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                {% csrf_token %}
+                <form id="updateForm" method="POST">
+                  <div class="form-group">
+                    <label>First Name</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                      <input type="text" class="form-control" placeholder="First Name" name="up_first_name"
+                        id="up_first_name" required />
+                    </div>
+                    <!-- <input type="text" class="form-control" name="userid" id="userid" required> -->
+                  </div>
+
+                  <div class="form-group">
+                    <label>Last Name</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                      <input type="text" class="form-control" placeholder="last Name" name="up_last_name"
+                        id="up_last_name" required />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Username</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                      <input disabled type="text" class="form-control" placeholder="Username" name="up_username"
+                        id="up_username" required />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Email</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-envelope"></i>
+                        </div>
+                      </div>
+                      <input type="emai" class="form-control" placeholder="e.g example@test.so" name="up_email"
+                        id="up_email" required />
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-success m-t-15 waves-effect">
+                    Update
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal -->
+
+        <!-- Setting Bar Sections -->
+        {% include "includes/settingbar.html" %}
+        <!-- Ending Setting Bar Sections -->
+      </div>
+
+      <!-- Footbar Section -->
+      {% include "includes/footer.html" %}
+      <!-- EndFootbar Section -->
+    </div>
+  </div>
+
+  <!-- General JS Scripts -->
+
+  <!-- Scripts Section -->
+  {% include "includes/scripts.html" %}
+  <!-- End Scripts Section -->
+  <script src="{% static 'assets/scripts/users.js' %}"></script>
+</body>
+
+{{ redirect_to_login_immediately }}
+<!-- datatables.html  21 Nov 2019 03:55:25 GMT -->
+
+</html>

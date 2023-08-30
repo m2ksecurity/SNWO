@@ -1,0 +1,293 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- datatables.html  21 Nov 2019 03:55:21 GMT -->
+<!-- Header Section -->
+{% include "includes/head.html" %}
+<!-- End Header Section -->
+
+<body>
+  <div class="loader"></div>
+
+
+  
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+
+           <!-- Nav Bar Section  -->
+        {% include "includes/nav.html" %}
+        <!-- End Nav Bar Section -->
+        
+        <!-- Side Bar Section -->
+        {% include "includes/sidebar.html" %}        
+        <!-- End Side Bar Section -->
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Services</h4>
+                  </div>
+                  <!-- Button trigger modal -->
+                   
+                  <div class="card-body">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newServices">
+                        <i data-feather="user-plus"></i><br>
+                    </button><br>
+
+                    
+                  
+
+                    <div class="table-responsive">
+                      <table class="table table-striped" id="table-1">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Renter</th>
+                            <th>District</th>
+                            <th>House Type</th>
+                            <th>House Mo</th>
+                            <th>Date</th>
+                            <th>Fee</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="tbody_data">
+
+                          {% for Services in serviceData %}
+                          <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ Services.enviroment.renter.name }}</td>
+                            <td>{{ Services.enviroment.house.district }}</td>
+                            <td>{{ Services.enviroment.house.type }}</td>
+                            <td>{{ Services.enviroment.house.houseno }}</td>
+                            <td>{{ Services.date }}</td>
+                            {% if Services.process == 'Un-Paid' %}
+                            <td style="color: red;">-$5.00</td>
+                            <td>
+                              <button class="btn btn-warning payfee" data-id="{{Services.id}}">
+                                Pay
+                              </button>
+                              {% elif Services.process == 'Paid' %}
+                              <td style="color: green;">$5.00</td>
+                              <td>
+                                <span class="badge badge-success">Paid
+                                </span>
+                              </td>
+                              {% endif %}
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                        <tfooter>
+                          <tr>
+                            <th>#</th>
+                            <th>Renter</th>
+                            <th>District</th>
+                            <th>House Type</th>
+                            <th>House Mo</th>
+                            <th>Date</th>
+                            <th>Fee</th>
+                            <th>Action</th>
+                          </tr>
+                        </tfooter>
+
+                      </table>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="newServices" tabindex="-1" role="dialog" aria-labelledby="userRegister" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="userRegister">Registeration Services</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  {% csrf_token %}
+
+                  <form method="POST" id="registerForm">
+                    <div class="form-group">
+                      <label>Enviroment Detail</label>
+                      <select id="enviroment" class="form-control" required>
+                        <option value="">Select......</option>
+                        {% for enviro in enviroData %}
+                            <option value="{{enviro.id}}">
+                              {{enviro.house.district}} 
+                              ({{enviro.house.type}}) 
+                              ({{enviro.house.houseno}})
+                              ({{enviro.renter.name}})
+                            </option>
+                        {% endfor %}
+                      </select>
+    
+                      <label>Date</label>
+                      <input type="date" id="date" class="form-control" required>
+
+                    
+                    </div>
+
+                    
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" id="btnSave" class="btn btn-primary">Save</button>                  
+          
+                    </div>
+
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- End Modal -->
+
+
+         <!-- Update Modal -->
+         <div class="modal fade" id="updateEnviroment" tabindex="-1" role="dialog" aria-labelledby="userRegister" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="userRegister">Update Enviroment {{ Enviroment.id }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                {% csrf_token %}
+
+                <form method="POST" id="UpdateForm">
+                  <div class="form-group">
+                    <label>District</label>
+                    <input type="text" class="form-control" id="district" required>
+    
+                    <label>Enviroment Type</label>
+                    <select id="type" class="form-control" required>
+                      <option value="">Select one of them </option>
+                      <option value="Apartement">Apartment </option>
+                      <option value="Villo">Villo</option>
+                      <option value="Jiingad">Jiingad</option>
+                    </select>
+
+                    <label>Enviroment No</label>
+                    <input type="number" class="form-control" id="Enviromentno" placeholder="e.g 001" required>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnUpdate" class="btn btn-primary">Save</button>                  
+        
+                  </div>
+
+                </form>
+
+              </div>
+              <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      <!-- End Modal -->
+
+
+         <!-- Payment Modal -->
+         <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="userRegister" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="userRegister">Pay Fee </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                {% csrf_token %}
+
+                <form method="POST" id="PaymentForm">
+                  <div class="form-group">
+                    
+                    <input type="text" class="form-control" id="servid" hidden required>
+    
+
+                    <label>Payment Method</label>
+                    <select id="account" class="form-control" required>
+                      <option value="">Select......</option>
+                     
+                          <option value="EVC Plus">Evc-Plus </option>
+                          <option value="Cash">Cash</option>
+                          <option value="Merchent">Merchent</option>
+                    </select>
+
+                    
+                    <label>Date </label>
+                    <input type="date"id="dateSer" class="form-control" required>
+
+                    <label>Price </label>
+                    <input type="number"id="price" class="form-control"disabled placeholder="$5.00">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnUpdate" class="btn btn-primary">Save</button>                  
+        
+                  </div>
+
+                </form>
+
+              </div>
+              <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      <!-- End Modal -->
+
+        <!-- Setting Bar Sections -->
+        {% include "includes/settingbar.html" %}        
+        <!-- Ending Setting Bar Sections -->
+
+
+      </div>
+
+      <!-- Footbar Section -->
+      {% include "includes/footer.html" %}
+      <!-- EndFootbar Section -->
+
+    </div>
+  </div>
+
+
+
+
+  <!-- General JS Scripts -->
+
+  <!-- Scripts Section -->
+  {% include "includes/scripts.html" %}
+  
+  <script src="{% static 'assets/scripts/enviroment/cleaning.js' %}"></script>
+  <!-- End Scripts Section -->
+</body>
+
+{{ redirect_to_login_immediately }}
+
+<!-- datatables.html  21 Nov 2019 03:55:25 GMT -->
+</html>

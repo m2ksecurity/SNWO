@@ -1,0 +1,13 @@
+<div class="form-group form-float">
+  <div class="form-line">
+    <label class="form-label">Institution*</label>
+
+    <select name="institution" id="institution" class="form-control" required>
+      <option value="">Choose one</option>
+      {% for section in sections %}
+      <option value="{{section.id}}">{{section.section}}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+

@@ -1,0 +1,309 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head Section -->
+{% include "includes/head.html" %}
+<!-- End Head Section -->
+
+<body>
+  <div class="loader"></div>
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+
+      <!-- Nav Bar Section  -->
+      {% include "includes/nav.html" %}
+      <!-- End Nav Bar Section -->
+
+      <!-- Side Bar Section -->
+      {% include "includes/sidebar.html" %}
+      <!-- End Side Bar Section -->
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+
+            <!-- <div class="row"> -->
+            <!-- <div class="card">
+              <form id="trafficForm" method="POST" enctype="multipart/form-data">
+                {% csrf_token %} -->
+
+
+            <!-- Drver Info -->
+            <!-- <div class="card-header">
+                  <h4>DRIVER INFO </h4>
+                </div>
+
+
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" id="firstName" required placeholder="Enter First Name">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Middle Name</label>
+                        <input type="text" class="form-control" id="middleName" required
+                          placeholder="Enter Middle Name">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" id="lastName" required placeholder="Enter Last Name">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Organization</label>
+                        <select name="" id="section" class="form-control" required>
+                          <option value="">Choose One</option>
+                          {% for section in sections %}
+                          <option value="{{section.id}}">{{section.section}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Institutions</label>
+                        <select name="" id="institution" class="form-control" required>
+                          <option value=""></option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" class="form-control" id="title" required placeholder="Enter Driver Title">
+                      </div>
+                    </div>
+
+                  </div>
+                </div> -->
+
+            <!-- End Driver Info -->
+
+            <!-- Vehicle Info -->
+
+            <!-- <div class="card-header">
+                  <h4>VEHICLE INFO </h4>
+                </div> -->
+
+            <!-- 
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Plate Code </label>
+                        <input minlength="2" maxlength="2" type="text" class="form-control" id="plate_code" required
+                          placeholder="AA,AB,AC">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Plate Number</label>
+                        <input minlength="4" maxlength="4" min="0" type="number" class="form-control" id="plate_number"
+                          required placeholder="0000">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Male Passengers </label>
+                        <input type="number" min="0" class="form-control" id="malePassenger" required
+                          placeholder="Enter Number">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Female Passengers</label>
+                        <input type="number" min="0" class="form-control" id="femalePassenger" required
+                          placeholder="Enter Number">
+                      </div>
+                    </div>
+
+                  </div>
+                </div> -->
+
+            <!-- End Of Vehicle Info  -->
+
+            <!-- Identity Info -->
+
+            <!-- <div class="card-header">
+                  <h4>IDENTITY INFO </h4>
+                </div>
+
+
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Front Image </label>
+                        <input type="file" id="front_image" class="form-control" name="frontImage" accept="image/*"
+                          required />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Back mage Number</label>
+                        <input type="file" id="back_image" name="backImage" class="form-control" accept="image/*"
+                          required />
+                      </div>
+                    </div>
+
+                  </div>
+                </div> -->
+
+            <!-- End Of Identity Info -->
+
+
+            <!-- 
+
+                <div class="card-footer text-right">
+                  <button class="btn btn-primary mr-1" type="submit">Submit</button>
+                  <button class="btn btn-secondary" type="reset">Reset</button>
+                </div>
+
+
+              </form> -->
+            <!-- </div> -->
+            <!-- </div>
+            <!-- </div> -->
+
+
+
+
+
+
+            <div class="row clearfix">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>New Traffic Form</h4>
+                  </div>
+                  <div class="card-body">
+                    <form id="trafficForm" method="POST">
+
+                      {% csrf_token %}
+                      <h3>Driver Information</h3>
+                      <fieldset>
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <label class="form-label">Driver Name*</label>
+                            <input type="text" class="form-control" name="name" id="name" required />
+                          </div>
+                        </div>
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <label class="form-label">Organization*</label>
+                            <select name="section1" id="section" class="form-control" required>
+                              <option value="">Choose one</option>
+                              {% for section in sections %}
+                              <option value="{{section.id}}">{{section.section}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <label>Institions*</label>
+                            <select name="" id="institution" class="form-control" required>
+                              <option value=""></option>
+                            </select>
+                          </div>
+
+                        </div>
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <label class="form-label">Title*</label>
+                            <input type="text" class="form-control" id="title" name="title" required />
+                          </div>
+                        </div>
+                      </fieldset>
+                      <h3>Vehicle Information</h3>
+                      <fieldset>
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <label class="form-label">Plate Code*</label>
+                            <input type="text" name="pcode" class="form-control" id="plate_code" minlength="2"
+                              maxlength="2" required style="text-transform: uppercase;"
+                              oninput="this.value = this.value.toUpperCase()" />
+                          </div>
+                        </div>
+
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <label class="form-label">Plate Number*</label>
+                            <input type="text" name="pnumber" id="plate_number" class="form-control" minlength="4"
+                              maxlength="4" required />
+                          </div>
+                        </div>
+
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <label class="form-label">Male Passengers*</label>
+                            <input type="number" min="0" name="malePassenger" placeholder="Enter Number Male Passengers"
+                              class="form-control" id="malePassenger" required />
+                          </div>
+                        </div>
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <label class="form-label">Female Passengers*</label>
+                            <input type="number" min="0" name="femalePassenger"
+                              placeholder="Enter Number Male Passengers" class="form-control" id="femalePassenger"
+                              required />
+                          </div>
+                        </div>
+
+                      </fieldset>
+                      <h3>Driver Identification Cards</h3>
+                      <fieldset>
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <label class="form-label">Front Image*</label>
+                            <input type="file" id="front_image" name="frontImage" accept="image/*" capture="user"
+                              required />
+                          </div>
+                        </div>
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <label class="form-label">Back Image*</label>
+                            <input type="file" id="back_image" name="backImage" accept="image/*" capture="user"
+                              required />
+                          </div>
+                        </div>
+                      </fieldset>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+      </div>
+      </section>
+    </div>
+
+    <!-- Footbar Section -->
+    {% include "includes/footer.html" %}
+    <!-- EndFootbar Section -->
+  </div>
+  </div>
+
+  <!-- Scripts -->
+  {% include "includes/scripts.html" %}
+
+  <script src="{% static 'assets/scripts/Traffic/traffic.js' %}"></script>
+
+</body>
+
+<!-- blank.html  21 Nov 2019 03:54:41 GMT -->
+
+</html>
